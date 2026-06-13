@@ -3,8 +3,64 @@ from __future__ import annotations
 import tkinter as tk
 from tkinter import ttk
 
+from . import theme
 from .grid import FontGrid
 from .exporter import export_line, copy_to_clipboard
+
+
+def _apply_theme(root: tk.Tk) -> None:
+    root.configure(bg=theme.BASE)
+
+    style = ttk.Style()
+    style.theme_use("clam")
+
+    style.configure(".", background=theme.BASE, foreground=theme.TEXT)
+
+    style.configure(
+        "TFrame",
+        background=theme.BASE,
+    )
+    style.configure(
+        "TLabel",
+        background=theme.BASE,
+        foreground=theme.TEXT,
+    )
+    style.configure(
+        "TButton",
+        background=theme.SURFACE1,
+        foreground=theme.TEXT,
+        borderwidth=0,
+        padding=(14, 4),
+        focusthickness=0,
+    )
+    style.map(
+        "TButton",
+        background=[
+            ("active", theme.SURFACE2),
+            ("pressed", theme.SURFACE0),
+        ],
+        foreground=[
+            ("active", theme.TEXT),
+            ("pressed", theme.TEXT),
+        ],
+    )
+    style.configure(
+        "TEntry",
+        fieldbackground=theme.SURFACE0,
+        foreground=theme.TEXT,
+        insertcolor=theme.TEXT,
+        borderwidth=0,
+        padding=6,
+    )
+    style.map(
+        "TEntry",
+        fieldbackground=[
+            ("readonly", theme.MANTLE),
+        ],
+        foreground=[
+            ("readonly", theme.SUBTEXT0),
+        ],
+    )
 
 
 def main() -> None:
@@ -12,8 +68,7 @@ def main() -> None:
     root.title("5x7 Font Draw")
     root.resizable(False, False)
 
-    style = ttk.Style()
-    style.theme_use("clam")
+    _apply_theme(root)
 
     frame = ttk.Frame(root, padding=12)
     frame.grid(row=0, column=0, sticky="nsew")
@@ -60,7 +115,11 @@ def main() -> None:
     ttk.Label(frame, text="Output:").grid(row=3, column=0, sticky="w", pady=(0, 2))
 
     output_entry = ttk.Entry(
-        frame, textvariable=output_var, width=42, font=("Monaco", 12), state="readonly"
+        frame,
+        textvariable=output_var,
+        width=42,
+        font=("Monaco", 12),
+        state="readonly",
     )
     output_entry.grid(row=4, column=0, columnspan=2)
 

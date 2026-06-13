@@ -3,15 +3,12 @@ from __future__ import annotations
 import tkinter as tk
 from typing import Any, Optional
 
+from . import theme
+
 CELL_SIZE = 40
 COLS = 5
 ROWS = 7
 MARGIN = 4
-
-FILL_OFF = "#ffffff"
-FILL_ON = "#1a1a2e"
-OUTLINE_OFF = "#cccccc"
-OUTLINE_ON = "#333355"
 
 
 class FontGrid(tk.Canvas):
@@ -23,7 +20,7 @@ class FontGrid(tk.Canvas):
             width=w,
             height=h,
             highlightthickness=0,
-            bg="#e8e8e8",
+            bg=theme.MANTLE,
             cursor="cross",
             **kwargs,
         )
@@ -81,8 +78,8 @@ class FontGrid(tk.Canvas):
                 x2 = x1 + CELL_SIZE
                 y2 = y1 + CELL_SIZE
                 on = self._matrix[row][col]
-                fill = FILL_ON if on else FILL_OFF
-                outline = OUTLINE_ON if on else OUTLINE_OFF
+                fill = theme.LAVENDER if on else theme.SURFACE0
+                outline = theme.BLUE if on else theme.SURFACE2
                 self.create_rectangle(
                     x1, y1, x2, y2, fill=fill, outline=outline, tags="cell", width=1
                 )
