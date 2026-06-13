@@ -19,6 +19,16 @@ def export_line(matrix: list[list[bool]], char: str) -> str:
     return f"{hex_str}, /* {char} */"
 
 
+def export_string(matrices: dict[int, list[list[bool]]], text: str) -> str:
+    lines: list[str] = []
+    for i, ch in enumerate(text):
+        m = matrices.get(i)
+        if m is None:
+            m = [[False] * 5 for _ in range(7)]
+        lines.append(export_line(m, ch))
+    return "\n".join(lines)
+
+
 def copy_to_clipboard(text: str) -> None:
     root = tk.Tk()
     root.withdraw()

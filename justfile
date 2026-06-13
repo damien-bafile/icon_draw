@@ -17,7 +17,7 @@ help:
 
 # Run the app
 run:
-    uv run python src/main.py
+    uv run python -m src.main
 
 # Install dependencies
 install:
