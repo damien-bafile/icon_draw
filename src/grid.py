@@ -13,12 +13,6 @@ FILL_ON = "#1a1a2e"
 OUTLINE_OFF = "#cccccc"
 OUTLINE_ON = "#333355"
 
-BLANK_ROW: list[bool] = [False] * COLS
-
-
-def blank_matrix() -> list[list[bool]]:
-    return [BLANK_ROW[:] for _ in range(ROWS)]
-
 
 class FontGrid(tk.Canvas):
     def __init__(self, master: Optional[tk.Misc] = None, **kwargs: Any) -> None:
@@ -34,7 +28,7 @@ class FontGrid(tk.Canvas):
             **kwargs,
         )
 
-        self._matrix: list[list[bool]] = blank_matrix()
+        self._matrix: list[list[bool]] = [[False] * COLS for _ in range(ROWS)]
         self._last_cell: Optional[tuple[int, int]] = None
 
         self.bind("<Button-1>", self._on_click)
@@ -70,15 +64,13 @@ class FontGrid(tk.Canvas):
         self.draw()
 
     def clear(self) -> None:
-        self._matrix = blank_matrix()
+        for row in range(ROWS):
+            for col in range(COLS):
+                self._matrix[row][col] = False
         self.draw()
 
     def get_matrix(self) -> list[list[bool]]:
         return [row[:] for row in self._matrix]
-
-    def set_matrix(self, matrix: list[list[bool]]) -> None:
-        self._matrix = [row[:] for row in matrix]
-        self.draw()
 
     def draw(self) -> None:
         self.delete("cell")

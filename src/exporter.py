@@ -14,19 +14,9 @@ def matrix_to_hex(matrix: list[list[bool]]) -> str:
     return ",".join(bytes_out)
 
 
-def export_line(matrix: list[list[bool]], char: str) -> str:
+def export_line(matrix: list[list[bool]], comment: str) -> str:
     hex_str = matrix_to_hex(matrix)
-    return f"{hex_str}, /* {char} */"
-
-
-def export_string(matrices: dict[int, list[list[bool]]], text: str) -> str:
-    lines: list[str] = []
-    for i, ch in enumerate(text):
-        m = matrices.get(i)
-        if m is None:
-            m = [[False] * 5 for _ in range(7)]
-        lines.append(export_line(m, ch))
-    return "\n".join(lines)
+    return f"{hex_str}, /* {comment} */"
 
 
 def copy_to_clipboard(text: str) -> None:
