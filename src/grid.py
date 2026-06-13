@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import tkinter as tk
+from collections.abc import Callable
 from typing import Any, Optional
 
 from . import theme
@@ -12,7 +13,12 @@ MARGIN = 4
 
 
 class FontGrid(tk.Canvas):
-    def __init__(self, master: Optional[tk.Misc] = None, **kwargs: Any) -> None:
+    def __init__(
+        self,
+        master: Optional[tk.Misc] = None,
+        on_change: Optional[Callable[[], None]] = None,
+        **kwargs: Any,
+    ) -> None:
         w = COLS * CELL_SIZE + MARGIN * 2
         h = ROWS * CELL_SIZE + MARGIN * 2
         super().__init__(
@@ -25,6 +31,7 @@ class FontGrid(tk.Canvas):
             **kwargs,
         )
 
+        self._on_change = on_change
         self._matrix: list[list[bool]] = [[False] * COLS for _ in range(ROWS)]
         self._last_cell: Optional[tuple[int, int]] = None
 
@@ -59,12 +66,18 @@ class FontGrid(tk.Canvas):
         row, col = cell
         self._matrix[row][col] = not self._matrix[row][col]
         self.draw()
+        self._notify()
 
     def clear(self) -> None:
         for row in range(ROWS):
             for col in range(COLS):
                 self._matrix[row][col] = False
         self.draw()
+        self._notify()
+
+    def _notify(self) -> None:
+        if self._on_change is not None:
+            self._on_change()
 
     def get_matrix(self) -> list[list[bool]]:
         return [row[:] for row in self._matrix]

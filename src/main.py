@@ -87,7 +87,14 @@ def main() -> None:
     comment_entry.grid(row=0, column=1, sticky="w", pady=(0, 2))
     comment_entry.selection_range(0, tk.END)
 
-    grid = FontGrid(frame)
+    output_var = tk.StringVar()
+
+    def update_output() -> None:
+        comment = comment_var.get() or " "
+        line = export_line(grid.get_matrix(), comment)
+        output_var.set(line)
+
+    grid = FontGrid(frame, on_change=update_output)
     grid.grid(row=1, column=0, columnspan=2, pady=8)
 
     btn_frame = ttk.Frame(frame)
@@ -96,13 +103,6 @@ def main() -> None:
     ttk.Button(btn_frame, text="Clear", command=grid.clear).pack(
         side=tk.LEFT, padx=(0, 8)
     )
-
-    output_var = tk.StringVar()
-
-    def update_output() -> None:
-        comment = comment_var.get() or " "
-        line = export_line(grid.get_matrix(), comment)
-        output_var.set(line)
 
     def do_export() -> None:
         update_output()
