@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import tkinter as tk
 from tkinter import ttk
 
@@ -5,7 +7,7 @@ from src.grid import FontGrid
 from src.exporter import export_line, copy_to_clipboard
 
 
-def main():
+def main() -> None:
     root = tk.Tk()
     root.title("5x7 Font Draw")
     root.resizable(False, False)
@@ -18,7 +20,7 @@ def main():
 
     char_var = tk.StringVar(value="!")
 
-    def on_char_change(*_args):
+    def on_char_change(*_args: object) -> None:
         v = char_var.get()
         if len(v) > 1:
             char_var.set(v[-1])
@@ -26,10 +28,10 @@ def main():
 
     char_var.trace_add("write", on_char_change)
 
-    ttk.Label(frame, text="Character:").grid(row=0, column=0, sticky="w",
-                                              pady=(0, 2))
-    char_entry = ttk.Entry(frame, textvariable=char_var, width=4,
-                           font=("Monaco", 14), justify="center")
+    ttk.Label(frame, text="Character:").grid(row=0, column=0, sticky="w", pady=(0, 2))
+    char_entry = ttk.Entry(
+        frame, textvariable=char_var, width=4, font=("Monaco", 14), justify="center"
+    )
     char_entry.grid(row=0, column=1, sticky="w", pady=(0, 2))
     char_entry.selection_range(0, tk.END)
 
@@ -40,27 +42,29 @@ def main():
     btn_frame.grid(row=2, column=0, columnspan=2, pady=(0, 8))
 
     ttk.Button(btn_frame, text="Clear", command=grid.clear).pack(
-        side=tk.LEFT, padx=(0, 8))
+        side=tk.LEFT, padx=(0, 8)
+    )
 
     output_var = tk.StringVar()
 
-    def update_output():
+    def update_output() -> None:
         char = char_var.get() or " "
         line = export_line(grid.get_matrix(), char)
         output_var.set(line)
 
-    def do_export():
+    def do_export() -> None:
         update_output()
         copy_to_clipboard(output_var.get())
 
-    ttk.Button(btn_frame, text="Export to Clipboard",
-               command=do_export).pack(side=tk.LEFT)
+    ttk.Button(btn_frame, text="Export to Clipboard", command=do_export).pack(
+        side=tk.LEFT
+    )
 
-    ttk.Label(frame, text="Output:").grid(row=3, column=0, sticky="w",
-                                           pady=(0, 2))
+    ttk.Label(frame, text="Output:").grid(row=3, column=0, sticky="w", pady=(0, 2))
 
-    output_entry = ttk.Entry(frame, textvariable=output_var, width=42,
-                             font=("Monaco", 12), state="readonly")
+    output_entry = ttk.Entry(
+        frame, textvariable=output_var, width=42, font=("Monaco", 12), state="readonly"
+    )
     output_entry.grid(row=4, column=0, columnspan=2)
 
     update_output()

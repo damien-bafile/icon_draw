@@ -1,23 +1,25 @@
+from __future__ import annotations
+
 import tkinter as tk
 
 
-def matrix_to_hex(matrix):
-    bytes_out = []
+def matrix_to_hex(matrix: list[list[bool]]) -> str:
+    bytes_out: list[str] = []
     for col in range(5):
         val = 0
         for row in range(7):
             if matrix[row][col]:
-                val |= (1 << row)
+                val |= 1 << row
         bytes_out.append(f"0x{val:02x}")
     return ",".join(bytes_out)
 
 
-def export_line(matrix, char):
+def export_line(matrix: list[list[bool]], char: str) -> str:
     hex_str = matrix_to_hex(matrix)
     return f"{hex_str}, /* {char} */"
 
 
-def copy_to_clipboard(text):
+def copy_to_clipboard(text: str) -> None:
     root = tk.Tk()
     root.withdraw()
     root.clipboard_clear()
