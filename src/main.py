@@ -73,7 +73,7 @@ def main() -> None:
     frame = ttk.Frame(root, padding=12)
     frame.grid(row=0, column=0, sticky="nsew")
 
-    comment_var = tk.StringVar(value="!")
+    comment_var = tk.StringVar(value="")
 
     def on_comment_change(*_args: object) -> None:
         update_output()
