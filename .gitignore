@@ -7,3 +7,7 @@ build/
 *.spec
 .venv/
 .DS_Store
+/src/#main.py#
+/create_repo.py~
+/create_repo.py
+/src/.#main.py
